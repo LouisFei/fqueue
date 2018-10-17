@@ -2,10 +2,25 @@
 {
     public enum BrokerRequestCode
     {
+        /// <summary>
+        /// 发送消息
+        /// </summary>
         SendMessage = 10,
+        /// <summary>
+        /// 拉消息
+        /// </summary>
         PullMessage = 11,
+        /// <summary>
+        /// 批量发送消息
+        /// </summary>
         BatchSendMessage = 12,
+        /// <summary>
+        /// 生产者心跳
+        /// </summary>
         ProducerHeartbeat = 100,
+        /// <summary>
+        /// 消费者心跳
+        /// </summary>
         ConsumerHeartbeat = 101,
         GetConsumerIdsForTopic = 102,
         UpdateQueueConsumeOffsetRequest = 103,

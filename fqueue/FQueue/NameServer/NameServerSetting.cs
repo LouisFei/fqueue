@@ -3,6 +3,9 @@ using ECommon.Socketing;
 
 namespace EQueue.NameServer
 {
+    /// <summary>
+    /// Name Server设置
+    /// </summary>
     public class NameServerSetting
     {
         /// <summary>服务端口号，默认为9493

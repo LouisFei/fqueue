@@ -6,29 +6,66 @@ namespace EQueue.Protocols.Brokers
     [Serializable]
     public class BrokerInfo
     {
-        /// <summary>Broker的名字，默认为DefaultBroker
+        /// <summary>
+        /// Broker的名字，
+        /// 默认为DefaultBroker
         /// </summary>
         public string BrokerName { get; set; }
-        /// <summary>Broker的分组名，当实现主备时，MasterBroker和它的所有的SlaveBroker的分组名相同；不同的MasterBroker的分组名要求不同；默认为DefaultGroup
+
+        /// <summary>
+        /// Broker的分组名，
+        /// 当实现主备时，MasterBroker和它的所有的SlaveBroker的分组名相同；
+        /// 不同的MasterBroker的分组名要求不同；
+        /// 默认为DefaultGroup
         /// </summary>
         public string GroupName { get; set; }
-        /// <summary>Broker的集群名，一个集群下有可以有多个MasterBroker，每个MasterBroker可以有多个SlaveBroker；默认为DefaultCluster
+
+        /// <summary>
+        /// Broker的集群名，
+        /// 一个集群下有可以有多个MasterBroker，每个MasterBroker可以有多个SlaveBroker；
+        /// 默认为DefaultCluster
         /// </summary>
         public string ClusterName { get; set; }
-        /// <summary>Broker的角色，目前有Master,Slave两种角色；默认为Master
+
+        /// <summary>
+        /// Broker的角色，
+        /// 目前有Master,Slave两种角色；
+        /// 默认为Master
         /// </summary>
         public int BrokerRole { get; set; }
-        /// <summary>供Producer连接的地址；默认IP为本地IP，端口为5000，格式为ip:port
+
+        /// <summary>
+        /// 供Producer连接的地址；
+        /// 默认IP为本地IP，端口为5000，格式为ip:port
         /// </summary>
         public string ProducerAddress { get; set; }
-        /// <summary>供Consumer连接的地址；默认IP为本地IP，端口为5001，格式为ip:port
+
+        /// <summary>
+        /// 供Consumer连接的地址；
+        /// 默认IP为本地IP，端口为5001，格式为ip:port
         /// </summary>
         public string ConsumerAddress { get; set; }
-        /// <summary>Producer，Consumer对Broker发送的发消息和拉消息除外的其他内部请求，以及后台管理控制台发送的查询请求使用的地址；默认IP为本地IP，端口为5002，格式为ip:port
+
+        /// <summary>
+        /// 管理地址
+        /// Producer，Consumer对Broker发送的发消息和拉消息除外的其他内部请求，
+        /// 以及后台管理控制台发送的查询请求使用的地址；
+        /// 默认IP为本地IP，端口为5002，格式为ip:port
         /// </summary>
         public string AdminAddress { get; set; }
 
         public BrokerInfo() { }
+
+        /// <summary>
+        /// 构造一个Broker配置对象
+        /// </summary>
+        /// <param name="name">Broker的名字</param>
+        /// <param name="groupName">Broker的分组名</param>
+        /// <param name="clusterName">Broker的集群名</param>
+        /// <param name="role">Broker的角色</param>
+        /// <param name="producerAddress">供Producer连接的地址</param>
+        /// <param name="consumerAddress">供Consumer连接的地址</param>
+        /// <param name="adminAddress">管理地址</param>
         public BrokerInfo(string name, string groupName, string clusterName, BrokerRole role, string producerAddress, string consumerAddress, string adminAddress)
         {
             BrokerName = name;
@@ -40,6 +77,9 @@ namespace EQueue.Protocols.Brokers
             AdminAddress = adminAddress;
         }
 
+        /// <summary>
+        /// 验证有效性
+        /// </summary>
         public void Valid()
         {
             Ensure.NotNullOrEmpty(BrokerName, "BrokerName");
@@ -48,11 +88,18 @@ namespace EQueue.Protocols.Brokers
             Ensure.NotNull(ProducerAddress, "ProducerAddress");
             Ensure.NotNull(ConsumerAddress, "ConsumerAddress");
             Ensure.NotNull(AdminAddress, "AdminAddress");
+
             if (BrokerRole != (int)Brokers.BrokerRole.Master && BrokerRole != (int)Brokers.BrokerRole.Slave)
             {
                 throw new ArgumentException("Invalid broker role: " + BrokerRole);
             }
         }
+
+        /// <summary>
+        /// 比较两个Broker是否相同
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public bool IsEqualsWith(BrokerInfo other)
         {
             if (other == null)

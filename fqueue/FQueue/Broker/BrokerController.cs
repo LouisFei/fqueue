@@ -289,6 +289,11 @@ namespace EQueue.Broker
             _adminSocketRemotingServer.RegisterRequestHandler((int)BrokerRequestCode.DeleteConsumerGroup, new DeleteConsumerGroupRequestHandler());
             _adminSocketRemotingServer.RegisterRequestHandler((int)BrokerRequestCode.GetLastestMessages, new GetBrokerLatestSendMessagesRequestHandler());
         }
+        /// <summary>
+        /// Broker启动时，与配置的所有的Name Server建立TCP长连接；
+        /// 定时（5s，可配置）向所有的Name Server注册自己的所有信息，
+        /// 主要包括：基本信息、队列信息、消费信息、生成者信息、消费者信息；             
+        /// </summary>
         private void StartAllNameServerClients()
         {
             foreach (var nameServerRemotingClient in _nameServerRemotingClientList)
@@ -385,6 +390,7 @@ namespace EQueue.Broker
                 _logger.Error(string.Format("Unregister broker from name server has exception, brokerInfo: {0}, nameServerAddress: {1}", request.BrokerInfo, nameServerAddress), ex);
             }
         }
+
         class ProducerConnectionEventListener : IConnectionEventListener
          {
              private BrokerController _brokerController;
@@ -403,6 +409,7 @@ namespace EQueue.Broker
                  _brokerController._producerManager.RemoveProducer(connectionId);
              }
          }
+
         class ConsumerConnectionEventListener : IConnectionEventListener
          {
              private BrokerController _brokerController;

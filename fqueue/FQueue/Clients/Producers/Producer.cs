@@ -15,6 +15,9 @@ using EQueue.Utils;
 
 namespace EQueue.Clients.Producers
 {
+    /// <summary>
+    /// 生产者
+    /// </summary>
     public class Producer
     {
         #region Private Variables
@@ -59,6 +62,7 @@ namespace EQueue.Clients.Producers
                 SendHeartbeatInterval = Setting.HeartbeatBrokerInterval,
                 RefreshBrokerAndTopicRouteInfoInterval = Setting.RefreshBrokerAndTopicRouteInfoInterval
             };
+
             _clientService = new ClientService(clientSetting, this, null);
         }
 

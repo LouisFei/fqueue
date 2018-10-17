@@ -18,7 +18,9 @@ namespace QuickStart.NameServer
             var bindingIpAddress = string.IsNullOrEmpty(bindingAddress) ? SocketUtils.GetLocalIPV4() : IPAddress.Parse(bindingAddress);
 
             /*
-             
+             Name Server的职责
+             是负责管理所有的Broker，并为Producer，Consumer提供Broker信息以及所有Topic的路由信息；
+
              */
             new NameServerController(new NameServerSetting
             {

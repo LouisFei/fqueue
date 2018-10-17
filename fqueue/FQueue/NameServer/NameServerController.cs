@@ -9,6 +9,9 @@ using EQueue.Protocols.NameServers;
 
 namespace EQueue.NameServer
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class NameServerController
     {
         private readonly ILogger _logger;
@@ -24,9 +27,14 @@ namespace EQueue.NameServer
             ClusterManager = new ClusterManager(this);
             _logger = ObjectContainer.Resolve<ILoggerFactory>().Create(GetType().FullName);
             _socketRemotingServer = new SocketRemotingServer("EQueue.NameServer.RemotingServer", Setting.BindingAddress, Setting.SocketSetting);
+
             RegisterRequestHandlers();
         }
 
+        /// <summary>
+        /// 开启
+        /// </summary>
+        /// <returns></returns>
         public NameServerController Start()
         {
             var watch = Stopwatch.StartNew();
@@ -37,6 +45,11 @@ namespace EQueue.NameServer
             _logger.InfoFormat("NameServer started, timeSpent: {0}ms, bindingAddress: {1}", watch.ElapsedMilliseconds, Setting.BindingAddress);
             return this;
         }
+
+        /// <summary>
+        /// 关闭
+        /// </summary>
+        /// <returns></returns>
         public NameServerController Shutdown()
         {
             if (Interlocked.CompareExchange(ref _isShuttingdown, 1, 0) == 0)
@@ -50,6 +63,9 @@ namespace EQueue.NameServer
             return this;
         }
 
+        /// <summary>
+        /// 注册请求处理委托
+        /// </summary>
         private void RegisterRequestHandlers()
         {
             _socketRemotingServer.RegisterRequestHandler((int)NameServerRequestCode.RegisterBroker, new RegisterBrokerRequestHandler(this));

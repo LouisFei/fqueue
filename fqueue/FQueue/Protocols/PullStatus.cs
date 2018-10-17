@@ -1,5 +1,8 @@
 ﻿namespace EQueue.Protocols
 {
+    /// <summary>
+    /// 拉动作的状态
+    /// </summary>
     public enum PullStatus : short
     {
         Found = 1,

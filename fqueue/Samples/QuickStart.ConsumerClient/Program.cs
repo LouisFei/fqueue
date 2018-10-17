@@ -18,6 +18,7 @@ namespace QuickStart.ConsumerClient
         static void Main(string[] args)
         {
             InitializeEQueue();
+
             Console.ReadLine();
         }
 
@@ -40,6 +41,7 @@ namespace QuickStart.ConsumerClient
             var topic = ConfigurationManager.AppSettings["Topic"];
             var nameServerAddress = string.IsNullOrEmpty(address) ? SocketUtils.GetLocalIPV4() : IPAddress.Parse(address);
             var clientCount = int.Parse(ConfigurationManager.AppSettings["ClientCount"]);
+
             var setting = new ConsumerSetting
             {
                 ClusterName = clusterName,
@@ -48,6 +50,7 @@ namespace QuickStart.ConsumerClient
                 NameServerList = new List<IPEndPoint> { new IPEndPoint(nameServerAddress, 9493) }
             };
             var messageHandler = new MessageHandler();
+
             for (var i = 1; i <= clientCount; i++)
             {
                 new Consumer(consumerGroup, setting, consumerName)

@@ -26,8 +26,12 @@ namespace QuickStart.ProducerClient
 
         static void Main(string[] args)
         {
+            //初始化
             InitializeEQueue();
+
+            //发送测试消息
             SendMessageTest();
+
             Console.ReadLine();
         }
 
@@ -59,6 +63,7 @@ namespace QuickStart.ProducerClient
             };
             _performanceService.Initialize("SendMessage", setting).Start();
         }
+
         static void SendMessageTest()
         {
             var clusterName = ConfigurationManager.AppSettings["ClusterName"];
@@ -79,17 +84,22 @@ namespace QuickStart.ProducerClient
                     ClusterName = clusterName,
                     NameServerList = new List<IPEndPoint> { new IPEndPoint(nameServerAddress, 9493) }
                 };
+
                 var producer = new Producer(setting);
+
                 if (_mode == "Callback")
                 {
                     producer.RegisterResponseHandler(new ResponseHandler { BatchSize = batchSize });
                 }
                 producer.Start();
+
                 actions.Add(() => SendMessages(producer, _mode, batchSize, messageCount, topic, payload));
             }
 
+            //模拟并发
             Task.Factory.StartNew(() => Parallel.Invoke(actions.ToArray()));
         }
+
         static void SendMessages(Producer producer, string mode, int batchSize, long messageCount, string topic, byte[] payload)
         {
             _logger.Info("----Send message starting----");
